@@ -20,13 +20,13 @@
             margin-bottom: 16px;
         }
         h1 { font-size: 24px; margin-bottom: 16px; text-align: center; }
-        h2 { font-size: 18px; margin-bottom: 8px; }
+        h2 { font-size: 18px; margin-bottom: 8px; color: var(--tg-theme-button-color, #4a9eff); }
         .price { font-size: 20px; font-weight: bold; color: #e94560; margin: 8px 0; }
         .btn {
             display: block;
             width: 100%;
             padding: 14px;
-            background: var(--tg-theme-button-color, #0f3460);
+            background: var(--tg-theme-button-color, #4a9eff);
             color: var(--tg-theme-button-text-color, #fff);
             border: none;
             border-radius: 12px;
@@ -87,27 +87,17 @@
     </div>
 
     <script>
-        // Ждём загрузки Telegram Web App SDK
-        window.addEventListener('load', function() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                window.tg = window.Telegram.WebApp;
-                window.tg.ready();
-                window.tg.expand();
-            }
-        });
+        var tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
 
         function order(service) {
-            if (window.tg) {
-                // Отправляем данные боту
-                window.tg.sendData(JSON.stringify({ action: "order", service: service }));
-                window.tg.showPopup({
-                    title: "Заказ оформлен!",
-                    message: "Вы выбрали: " + service + ". Сейчас вернёмся в бот для оформления.",
-                    buttons: [{ type: "close", text: "OK" }]
-                });
-            } else {
-                alert("Откройте это приложение внутри Telegram!");
-            }
+            tg.sendData(JSON.stringify({ action: "order", service: service }));
+            tg.showPopup({
+                title: "Заказ оформлен!",
+                message: "Вы выбрали: " + service + ". Сейчас вернёмся в бот для оформления.",
+                buttons: [{ type: "close", text: "OK" }]
+            });
         }
     </script>
 </body>
