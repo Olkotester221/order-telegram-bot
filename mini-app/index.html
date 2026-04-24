@@ -87,17 +87,27 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        // Ждём загрузки Telegram Web App SDK
+        window.addEventListener('load', function() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.tg = window.Telegram.WebApp;
+                window.tg.ready();
+                window.tg.expand();
+            }
+        });
 
         function order(service) {
-            tg.sendData(JSON.stringify({ action: "order", service: service }));
-            tg.showPopup({
-                title: "Заказ оформлен!",
-                message: `Вы выбрали: ${service}. Сейчас вернёмся в бот для оформления.`,
-                buttons: [{ type: "close", text: "OK" }]
-            });
+            if (window.tg) {
+                // Отправляем данные боту
+                window.tg.sendData(JSON.stringify({ action: "order", service: service }));
+                window.tg.showPopup({
+                    title: "Заказ оформлен!",
+                    message: "Вы выбрали: " + service + ". Сейчас вернёмся в бот для оформления.",
+                    buttons: [{ type: "close", text: "OK" }]
+                });
+            } else {
+                alert("Откройте это приложение внутри Telegram!");
+            }
         }
     </script>
 </body>
