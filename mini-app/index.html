@@ -34,7 +34,7 @@
             cursor: pointer;
             margin-top: 12px;
         }
-        .btn:hover { opacity: 0.9; }
+        .btn:active { opacity: 0.8; }
         .features { margin: 8px 0; padding-left: 20px; }
         .features li { margin: 4px 0; }
     </style>
@@ -91,17 +91,20 @@
         tg.ready();
         tg.expand();
 
+        // Твой username бота — замени на реальный
+        const BOT_USERNAME = "HiigLer_bot";
+
         function order(type) {
-            const map = {
+            const services = {
                 'consult': 'Консультация',
                 'bot': 'Telegram бот',
                 'miniapp': 'Mini App',
                 'complex': 'Комплексное решение'
             };
-            tg.sendData(JSON.stringify({
-                action: 'order',
-                service: map[type]
-            }));
+            const service = services[type];
+            
+            // Открываем бота с командой заказа
+            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=order_${type}`);
             tg.close();
         }
     </script>
