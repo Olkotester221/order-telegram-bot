@@ -20,8 +20,8 @@
             margin-bottom: 16px;
         }
         h1 { font-size: 24px; margin-bottom: 16px; text-align: center; }
-        h2 { font-size: 18px; margin-bottom: 8px; color: var(--tg-theme-button-color, #0f3460); }
-        .price { font-size: 20px; font-weight: bold; color: var(--tg-theme-hint-color, #e94560); margin: 8px 0; }
+        h2 { font-size: 18px; margin-bottom: 8px; }
+        .price { font-size: 20px; font-weight: bold; color: #e94560; margin: 8px 0; }
         .btn {
             display: block;
             width: 100%;
@@ -50,7 +50,7 @@
             <li>Подбор оптимального решения</li>
             <li>План работ и сроки</li>
         </ul>
-        <button class="btn" onclick="order('consult')">Заказать</button>
+        <button class="btn" onclick="order('Консультация')">Заказать</button>
     </div>
 
     <div class="card">
@@ -61,7 +61,7 @@
             <li>Приём заказов / запись клиентов</li>
             <li>Интеграция с CRM</li>
         </ul>
-        <button class="btn" onclick="order('bot')">Заказать</button>
+        <button class="btn" onclick="order('Telegram бот')">Заказать</button>
     </div>
 
     <div class="card">
@@ -72,7 +72,7 @@
             <li>Каталог, корзина, ЛК</li>
             <li>Интеграция с Telegram API</li>
         </ul>
-        <button class="btn" onclick="order('miniapp')">Заказать</button>
+        <button class="btn" onclick="order('Mini App')">Заказать</button>
     </div>
 
     <div class="card">
@@ -83,7 +83,7 @@
             <li>Полная автоматизация</li>
             <li>Поддержка и развитие</li>
         </ul>
-        <button class="btn" onclick="order('complex')">Заказать</button>
+        <button class="btn" onclick="order('Комплексное решение')">Заказать</button>
     </div>
 
     <script>
@@ -91,21 +91,13 @@
         tg.ready();
         tg.expand();
 
-        // Твой username бота — замени на реальный
-        const BOT_USERNAME = "HiigLer_bot";
-
-        function order(type) {
-            const services = {
-                'consult': 'Консультация',
-                'bot': 'Telegram бот',
-                'miniapp': 'Mini App',
-                'complex': 'Комплексное решение'
-            };
-            const service = services[type];
-            
-            // Открываем бота с командой заказа
-            tg.openTelegramLink(`https://t.me/${BOT_USERNAME}?start=order_${type}`);
-            tg.close();
+        function order(service) {
+            tg.sendData(JSON.stringify({ action: "order", service: service }));
+            tg.showPopup({
+                title: "Заказ оформлен!",
+                message: `Вы выбрали: ${service}. Сейчас вернёмся в бот для оформления.`,
+                buttons: [{ type: "close", text: "OK" }]
+            });
         }
     </script>
 </body>
